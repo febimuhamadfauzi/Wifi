@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // Menampilkan daftar produk
-    public function index()
+    // Menampilkan daftar produk dengan fitur pencarian
+    public function index(Request $request)
     {
-        $products = Product::all();
+        $query = Product::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $products = $query->paginate(3); // Menggunakan pagination
         return view('admin.products.index', compact('products'));
     }
 

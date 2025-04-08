@@ -72,7 +72,6 @@
             <li><a href="#portfolio">Galeri</a></li>
             <li><a href="#pricing">Produk</a></li>
             <li><a href="#contact">Kontak</a></li>
-            <li><h2>|</h2></li>
             <li><a href="{{ route('login')}}">Login</a></li>
           </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -336,7 +335,7 @@
         <div style="margin-bottom: 5%" class="row gy-3">
 
             <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                <img src="assets/img/about.jpg" alt="" class="img-fluid">
+                <img src="{{ Storage::url($article->photo) }}" alt="" class="img-fluid">
             </div>
 
             <div class="col-lg-6 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="200">
@@ -477,46 +476,55 @@
     </section><!-- /Testimonials Section --> --}}
 
     <!-- Portfolio Section -->
-    <section id="portfolio" class="portfolio section">
+    <style>
+        @media (max-width: 768px) {
+          .gallery-wrapper {
+            flex-direction: column !important;
+          }
+        }
+      </style>
 
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>Galeri</h2>
-        <p>Periksa Galeri Kami</p>
-      </div><!-- End Section Title -->
+      <section id="portfolio" class="portfolio section">
 
-      <div class="container">
-
-        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
-
-          {{-- <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="100">
-            <li data-filter="*" class="filter-active">All</li>
-            <li data-filter=".filter-app">App</li>
-            <li data-filter=".filter-product">Card</li>
-            <li data-filter=".filter-branding">Web</li>
-          </ul><!-- End Portfolio Filters --> --}}
-
-          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
-
-            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-              <img src="assets/img/masonry-portfolio/masonry-portfolio-1.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>App 1</h4>
-                <p>Lorem ipsum, dolor sit</p>
-                <a href="assets/img/masonry-portfolio/masonry-portfolio-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-              </div>
-            </div><!-- End Portfolio Item -->
-
-
-            </div><!-- End Portfolio Item -->
-
-          </div><!-- End Portfolio Container -->
-
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+          <h2>Galeri</h2>
+          <p>Periksa Galeri Kami</p>
         </div>
 
-      </div>
+        <div class="container" style="overflow-x: auto; padding-bottom: 20px;">
+          <div class="gallery-wrapper" style="display: flex; flex-direction: row; gap: 16px; flex-wrap: nowrap;">
 
-    </section><!-- /Portfolio Section -->
+            @foreach ($galleries as $gallery)
+            <div style="min-width: 250px; max-width: 300px; background-color: #D0E8FF; border: 1px solid #ddd; box-shadow: 0px 2px 8px rgba(0,0,0,0.1); overflow: hidden; border-radius: 8px; flex-shrink: 0; margin: 10px;">
+
+                <div style="width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; background-color: #f0f8ff;">
+                  <img src="{{ Storage::url($gallery->photo) }}" alt="{{ $gallery->title }}"
+                       style="max-width: 100%; max-height: 100%; object-fit: contain; display: block;">
+                </div>
+
+                <div style="padding: 10px; background-color: #D0E8FF; text-align: center; color: #003366;">
+                  <h4 style="margin: 0 auto; font-size: 16px; color: #003366; max-width: 90%; word-wrap: break-word; overflow-wrap: break-word; text-align: center;">
+                    {{ $gallery->title }}
+                  </h4>
+                  <p style="margin: 5px auto; font-size: 14px; color: #003366; max-width: 90%; word-wrap: break-word; overflow-wrap: break-word; text-align: center;">
+                    {{ $gallery->description }}
+                  </p>
+                  <a href="{{ Storage::url($gallery->photo) }}" title="{{ $gallery->title }}" data-gallery="portfolio-gallery-app"
+                     class="glightbox preview-link" style="text-decoration: none; color: #003366;">
+                    <i class="bi bi-zoom-in" style="font-size: 20px;"></i>
+                  </a>
+                </div>
+
+              </div>
+
+            @endforeach
+
+          </div>
+        </div>
+
+      </section>
+      <!-- /Portfolio Section -->
 
     <!-- Team Section -->
     {{-- <section id="team" class="team section light-background">

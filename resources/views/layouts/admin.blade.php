@@ -1,61 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Admin - Provider WiFi</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #f4f6f9;
         }
         .sidebar {
             height: 100vh;
-            width: 250px;
+            width: 280px;
             position: fixed;
-            background-color: #343a40;
+            background-color: #1e1e2d;
             padding-top: 20px;
+            color: white;
+        }
+        .sidebar a, .sidebar .logout-btn {
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            transition: 0.3s;
+            border: none;
+            background: none;
+            text-align: left;
+            width: 100%;
         }
         .sidebar a {
-            padding: 10px;
-            text-decoration: none;
-            font-size: 18px;
-            color: #fff;
-            display: block;
+            color: white;
         }
-        .sidebar a:hover {
-            background-color: #495057;
+        .sidebar .logout-btn {
+            color: red;
+            cursor: pointer;
+        }
+        .sidebar a:hover, .sidebar .active, .sidebar .logout-btn:hover {
+            background-color: #373750;
+            border-left: 4px solid #ffcc00;
         }
         .content {
-            margin-left: 260px;
+            margin-left: 280px;
+            padding: 20px;
+        }
+        .card {
+            border-radius: 10px;
             padding: 20px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-        <h4 class="text-white text-center">Halaman Admin</h4>
-        <a href="{{ route('admin.dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="{{ route('products.index') }}"><i class="fas fa-box"></i> Kelola Produk</a>
-        <a href="{{ route('articles.index') }}"><i class="fas fa-newspaper"></i> Kelola Artikel</a>
-        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <i class="fas fa-sign-out-alt"></i> Logout
+        <h4 class="text-center">Admin Panel</h4>
+        <hr class="bg-light">
+        <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <i class="fas fa-home me-2"></i> Dashboard
         </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
+            <i class="fas fa-box me-2"></i> Kelola Produk
+        </a>
+        <a href="{{ route('articles.index') }}" class="{{ request()->routeIs('articles.*') ? 'active' : '' }}">
+            <i class="fas fa-newspaper me-2"></i> Kelola Artikel
+        </a>
+        <a href="{{ route('galleries.index') }}" class="{{ request()->routeIs('galleries.*') ? 'active' : '' }}">
+            <i class="fas fa-image me-2"></i> Kelola Galeri
+        </a>
+        <hr class="bg-light">
+
+        <!-- Tombol Logout -->
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
+            <button type="button" class="logout-btn" onclick="confirmLogout()">
+                <i class="fas fa-sign-out-alt me-2"></i> Logout
+            </button>
         </form>
     </div>
 
-    <!-- Main Content -->
     <div class="content">
         @yield('content')
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: "Anda yakin ingin logout?",
+                text: "Anda akan keluar dari akun admin!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Ya, Logout!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("logout-form").submit();
+                }
+            });
+        }
+    </script>
+
 </body>
 </html>

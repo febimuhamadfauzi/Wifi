@@ -9,6 +9,5 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'description']; // Kolom yang bisa diisi
+    protected $fillable = ['title', 'description', 'photo']; // Tambahkan 'photo' ke dalam fillable
 }
-

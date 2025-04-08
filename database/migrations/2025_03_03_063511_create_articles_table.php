@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title'); // Judul Artikel
             $table->text('description'); // Deskripsi Artikel
+            $table->string('photo')->nullable(); // Foto Artikel (Bisa kosong)
             $table->timestamps();
         });
     }
